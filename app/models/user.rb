@@ -1,0 +1,18 @@
+class User < ApplicationRecord
+  has_secure_password
+
+  # Validations
+  validates :name, presence: true
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, length: { minimum: 6 }, if: :password_digest_changed?
+
+  # Normalize email to lowercase
+  before_save :downcase_email
+
+  private
+
+  def downcase_email
+    self.email = email.downcase
+  end
+end
