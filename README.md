@@ -70,4 +70,4 @@ API runs on `http://localhost:3000`
 - 📋 API endpoints
 - 📋 Mobile app
 
-Target: December 2024
+Target: December 2025
