@@ -1,6 +1,6 @@
 # TripKit API
 
-> Backend API for a travel planning application
+> Backend API for a travel companion application
 
 [![Rails](https://img.shields.io/badge/Rails-7.0+-red.svg)](https://rubyonrails.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)](https://www.postgresql.org/)
@@ -11,13 +11,15 @@
 
 ## About
 
-TripKit is an all-in-one travel companion app for group trips. It combines:
+TripKit is a travel companion app for group trips, helping travelers manage expenses, itineraries, and documents in one place.
 
-- 📅 **Itinerary Planning** - Collaborative schedules with activities and timelines
-- 💰 **Expense Tracking** - Quick logging with automatic splitting and settlement
-- 📎 **Document Management** - Centralized storage for travel documents
+**Core Features:**
 
-Built specifically for multi-day travel with multi-currency support and real-time collaboration.
+- 💰 **Expense Tracking** - Log expenses with automatic splitting and settlement
+- 📅 **Itinerary Management** - Organize daily activities and schedules
+- 📎 **Document Storage** - Keep travel documents accessible to the group
+
+Designed for multi-day group trips with multi-currency support and real-time collaboration.
 
 ---
 
@@ -36,9 +38,9 @@ Built specifically for multi-day travel with multi-currency support and real-tim
 - Multi-currency expense tracking
 - Equal and custom split amounts
 - Real-time settlement calculations
-- Daily itinerary planning
-- Document uploads and organization
-- Trip sharing via invite codes
+- Daily itinerary organization
+- Document uploads and sharing
+- Trip invite codes
 
 ---
 
@@ -68,4 +70,4 @@ API runs on `http://localhost:3000`
 - 📋 API endpoints
 - 📋 Mobile app
 
-Target: December 2025
+Target: December 2024
