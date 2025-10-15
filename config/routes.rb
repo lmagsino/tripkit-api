@@ -4,6 +4,12 @@ Rails.application.routes.draw do
       # Authentication
       post 'auth/signup', to: 'authentication#signup'
       post 'auth/login', to: 'authentication#login'
+
+      resources :trips do
+        collection do
+          post :join
+        end
+      end
     end
   end
 end
