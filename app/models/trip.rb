@@ -3,6 +3,7 @@ class Trip < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   has_many :trip_memberships, dependent: :destroy
   has_many :users, through: :trip_memberships
+  has_many :expenses, dependent: :destroy
 
   # Validations
   validates :name, presence: true

@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_15_005652) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_15_012334) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "trip_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.string "currency", null: false
+    t.string "category", null: false
+    t.text "description"
+    t.bigint "paid_by_user_id", null: false
+    t.string "split_type", default: "equal", null: false
+    t.date "expense_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_expenses_on_category"
+    t.index ["expense_date"], name: "index_expenses_on_expense_date"
+    t.index ["paid_by_user_id"], name: "index_expenses_on_paid_by_user_id"
+    t.index ["trip_id"], name: "index_expenses_on_trip_id"
+  end
 
   create_table "trip_memberships", force: :cascade do |t|
     t.bigint "trip_id", null: false
@@ -50,6 +67,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_15_005652) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "expenses", "trips"
+  add_foreign_key "expenses", "users", column: "paid_by_user_id"
   add_foreign_key "trip_memberships", "trips"
   add_foreign_key "trip_memberships", "users"
   add_foreign_key "trips", "users", column: "creator_id"

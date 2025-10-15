@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :created_trips, class_name: 'Trip', foreign_key: 'creator_id', dependent: :destroy
   has_many :trip_memberships, dependent: :destroy
   has_many :trips, through: :trip_memberships
+  has_many :expenses, foreign_key: 'paid_by_user_id', dependent: :destroy  # Add this line
 
   # Validations
   validates :name, presence: true
