@@ -10,9 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_14_074635) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_15_005652) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "trip_memberships", force: :cascade do |t|
+    t.bigint "trip_id", null: false
+    t.bigint "user_id", null: false
+    t.string "role", default: "member", null: false
+    t.datetime "joined_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trip_id", "user_id"], name: "index_trip_memberships_on_trip_id_and_user_id", unique: true
+    t.index ["trip_id"], name: "index_trip_memberships_on_trip_id"
+    t.index ["user_id"], name: "index_trip_memberships_on_user_id"
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string "name", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.string "base_currency", default: "PHP", null: false
+    t.string "active_currency", default: "PHP", null: false
+    t.decimal "total_budget", precision: 10, scale: 2
+    t.string "invite_code", null: false
+    t.bigint "creator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_trips_on_creator_id"
+    t.index ["invite_code"], name: "index_trips_on_invite_code", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
@@ -23,4 +50,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_14_074635) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "trip_memberships", "trips"
+  add_foreign_key "trip_memberships", "users"
+  add_foreign_key "trips", "users", column: "creator_id"
 end

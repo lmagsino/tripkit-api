@@ -1,6 +1,11 @@
 class User < ApplicationRecord
   has_secure_password
 
+  # Associations
+  has_many :created_trips, class_name: 'Trip', foreign_key: 'creator_id', dependent: :destroy
+  has_many :trip_memberships, dependent: :destroy
+  has_many :trips, through: :trip_memberships
+
   # Validations
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
