@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
         resources :expenses
         resources :itinerary_items
+        resources :documents
       end
     end
   end
