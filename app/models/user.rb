@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :expenses, foreign_key: 'paid_by_user_id', dependent: :destroy
   has_many :expense_splits, dependent: :destroy
   has_many :itinerary_items, foreign_key: 'created_by_user_id', dependent: :destroy
+  has_many :documents, foreign_key: 'uploaded_by_user_id', dependent: :destroy
 
   # Validations
   validates :name, presence: true

@@ -5,6 +5,7 @@ class Trip < ApplicationRecord
   has_many :users, through: :trip_memberships
   has_many :expenses, dependent: :destroy
   has_many :itinerary_items, dependent: :destroy
+  has_many :documents, dependent: :destroy
 
   # Validations
   validates :name, presence: true
