@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_15_012745) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_15_013858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_15_012745) do
     t.index ["expense_date"], name: "index_expenses_on_expense_date"
     t.index ["paid_by_user_id"], name: "index_expenses_on_paid_by_user_id"
     t.index ["trip_id"], name: "index_expenses_on_trip_id"
+  end
+
+  create_table "itinerary_items", force: :cascade do |t|
+    t.bigint "trip_id", null: false
+    t.date "date", null: false
+    t.time "time"
+    t.string "title", null: false
+    t.string "location"
+    t.text "notes"
+    t.string "category", default: "activity", null: false
+    t.bigint "created_by_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_itinerary_items_on_category"
+    t.index ["created_by_user_id"], name: "index_itinerary_items_on_created_by_user_id"
+    t.index ["date"], name: "index_itinerary_items_on_date"
+    t.index ["trip_id"], name: "index_itinerary_items_on_trip_id"
   end
 
   create_table "trip_memberships", force: :cascade do |t|
@@ -83,6 +100,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_15_012745) do
   add_foreign_key "expense_splits", "users"
   add_foreign_key "expenses", "trips"
   add_foreign_key "expenses", "users", column: "paid_by_user_id"
+  add_foreign_key "itinerary_items", "trips"
+  add_foreign_key "itinerary_items", "users", column: "created_by_user_id"
   add_foreign_key "trip_memberships", "trips"
   add_foreign_key "trip_memberships", "users"
   add_foreign_key "trips", "users", column: "creator_id"
