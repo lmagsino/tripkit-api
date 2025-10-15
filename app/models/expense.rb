@@ -3,6 +3,7 @@ class Expense < ApplicationRecord
   belongs_to :trip
   belongs_to :paid_by_user, class_name: 'User'
   has_many :expense_splits, dependent: :destroy
+  has_many :split_users, through: :expense_splits, source: :user
 
   # Validations
   validates :amount, presence: true, numericality: { greater_than: 0 }

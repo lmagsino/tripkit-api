@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_15_012334) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_15_012745) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "expense_splits", force: :cascade do |t|
+    t.bigint "expense_id", null: false
+    t.bigint "user_id", null: false
+    t.decimal "share_amount", precision: 10, scale: 2, null: false
+    t.boolean "paid", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expense_id", "user_id"], name: "index_expense_splits_on_expense_id_and_user_id", unique: true
+    t.index ["expense_id"], name: "index_expense_splits_on_expense_id"
+    t.index ["user_id"], name: "index_expense_splits_on_user_id"
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.bigint "trip_id", null: false
@@ -67,6 +79,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_15_012334) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "expense_splits", "expenses"
+  add_foreign_key "expense_splits", "users"
   add_foreign_key "expenses", "trips"
   add_foreign_key "expenses", "users", column: "paid_by_user_id"
   add_foreign_key "trip_memberships", "trips"
