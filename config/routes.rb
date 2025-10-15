@@ -9,6 +9,8 @@ Rails.application.routes.draw do
         collection do
           post :join
         end
+
+        resources :expenses
       end
     end
   end
