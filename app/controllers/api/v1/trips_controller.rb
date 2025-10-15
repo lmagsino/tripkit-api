@@ -1,7 +1,7 @@
 class Api::V1::TripsController < ApplicationController
   include Authenticable
 
-  before_action :set_trip, only: [:show, :update, :destroy]
+  before_action :set_trip, only: [:show, :update, :destroy, :settlement]
 
   # GET /api/v1/trips
   def index
@@ -58,6 +58,37 @@ class Api::V1::TripsController < ApplicationController
     else
       render json: { errors: membership.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  # GET /api/v1/trips/:id/settlement
+  def settlement
+    currency = params[:currency] || @trip.active_currency
+    calculator = SettlementCalculator.new(@trip, currency)
+    settlements = calculator.calculate
+
+    # Enrich with user details
+    user_ids = settlements.flat_map { |s| [s[:from_user_id], s[:to_user_id]] }.uniq
+    users = User.where(id: user_ids).index_by(&:id)
+
+    enriched_settlements = settlements.map do |s|
+      {
+        from_user: {
+          id: s[:from_user_id],
+          name: users[s[:from_user_id]]&.name
+        },
+        to_user: {
+          id: s[:to_user_id],
+          name: users[s[:to_user_id]]&.name
+        },
+        amount: s[:amount],
+        currency: s[:currency]
+      }
+    end
+
+    render json: {
+      currency: currency,
+      settlements: enriched_settlements
+    }
   end
 
   private

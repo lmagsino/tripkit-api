@@ -10,6 +10,10 @@ Rails.application.routes.draw do
           post :join
         end
 
+        member do
+          get :settlement
+        end
+
         resources :expenses
         resources :itinerary_items
         resources :documents
