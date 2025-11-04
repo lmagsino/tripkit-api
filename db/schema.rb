@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_15_014556) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_04_103225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,12 +58,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_15_014556) do
 
   create_table "expense_splits", force: :cascade do |t|
     t.bigint "expense_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.decimal "share_amount", precision: 10, scale: 2, null: false
     t.boolean "paid", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["expense_id", "user_id"], name: "index_expense_splits_on_expense_id_and_user_id", unique: true
+    t.string "guest_name"
+    t.index ["expense_id", "user_id"], name: "index_expense_splits_on_expense_id_and_user_id", unique: true, where: "(user_id IS NOT NULL)"
     t.index ["expense_id"], name: "index_expense_splits_on_expense_id"
     t.index ["user_id"], name: "index_expense_splits_on_user_id"
   end

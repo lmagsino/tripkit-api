@@ -63,15 +63,28 @@ class Api::V1::ExpensesController < ApplicationController
 
   def create_expense_splits
     split_users = params[:split_user_ids] || @trip.user_ids
-    
+    guest_names = params[:guest_names] || []
+
     if @expense.split_type == 'equal'
-      share_amount = @expense.amount / split_users.count
+      total_splits = split_users.count + guest_names.count
+      share_amount = @expense.amount / total_splits
+
+      # Create splits for registered users
       split_users.each do |user_id|
         @expense.expense_splits.create(user_id: user_id, share_amount: share_amount)
       end
+
+      # Create splits for guest users
+      guest_names.each do |guest_name|
+        @expense.expense_splits.create(guest_name: guest_name, share_amount: share_amount)
+      end
     elsif @expense.split_type == 'custom' && params[:custom_splits].present?
       params[:custom_splits].each do |split|
-        @expense.expense_splits.create(user_id: split[:user_id], share_amount: split[:share_amount])
+        if split[:user_id].present?
+          @expense.expense_splits.create(user_id: split[:user_id], share_amount: split[:share_amount])
+        elsif split[:guest_name].present?
+          @expense.expense_splits.create(guest_name: split[:guest_name], share_amount: split[:share_amount])
+        end
       end
     end
   end
